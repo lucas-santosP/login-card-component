@@ -2,16 +2,17 @@ import Vue from "vue";
 import App from "./App.vue";
 import "@/css/reset.css";
 import "pretty-checkbox/dist/pretty-checkbox.min.css";
-// Font
-import { library } from "@fortawesome/fontawesome-svg-core";
+//FontAwesome
 import {
   faSync,
   faUser,
   faEnvelope,
-  faKey,
+  faEye,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faSync, faEnvelope, faKey, faUser);
+library.add(faSync, faEnvelope, faUser, faEye, faEyeSlash);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 //PrettyCheckbox

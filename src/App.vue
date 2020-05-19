@@ -1,46 +1,47 @@
 <template>
   <div id="app">
     <section>
-      <SignOut v-on:receive-user="user = $event"></SignOut>
-    </section>
+      <Form></Form>
+      <transition name="slide-fade" mode="out-in">
+        <div
+          v-if="user"
+          style="flex-direction: column;color:#fff; font-size: 20px; margin:0 5rem"
+        >
+          <p>Name: {{ user.name }}</p>
 
-    <section>
-      <SignIn></SignIn>
-    </section>
+          <p>month:{{ user.date.month }}</p>
+          <p>day:{{ user.date.day }}</p>
+          <p>year:{{ user.date.year }}</p>
 
-    <section style="flex-direction: column;color:#fff">
-      <template v-if="user">
-        <p>Name: {{ user.name }}</p>
-        <p>
-          Date of birth. <br />
-          day:{{ user.date.day }} day:{{ user.date.mouth }} day:{{
-            user.date.year
-          }}
-        </p>
-        <p>Email:{{ user.email }}</p>
-        <p>Password{{ user.password }}</p>
-        <p>Keep email:{{ user.keepEmail }}</p>
-      </template>
+          <p>Email:{{ user.email }}</p>
+          <p>Password{{ user.password }}</p>
+          <p>Keep email:{{ user.keepEmail }}</p>
+        </div>
+      </transition>
     </section>
   </div>
 </template>
 
 <script>
-import SignIn from "./components/SignIn.vue";
-import SignOut from "./components/SignOut.vue";
+import Form from "./components/Form.vue";
+import eventBus from "@/eventBus.js";
 
 export default {
   name: "App",
   components: {
-    SignIn,
-    SignOut,
+    Form,
   },
   data() {
     return {
       user: undefined,
     };
   },
-  methods: {},
+  created() {
+    eventBus.receiveUser((user) => {
+      this.user = user;
+      console.log(this.user);
+    });
+  },
 };
 </script>
 
@@ -54,6 +55,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background: #673ab7;
+  background: -webkit-linear-gradient(to top, #512da8, #673ab7);
+  background: linear-gradient(to top, #512da8, #673ab7);
 }
 #app {
   width: 100%;
@@ -65,7 +69,6 @@ section {
   align-items: center;
   height: 100vh;
   min-height: 600px;
-  background: rebeccapurple;
   border-bottom: 2px solid black;
 }
 form {
@@ -73,21 +76,24 @@ form {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 2rem;
   align-items: center;
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0px 0px 50px 10px #00000071;
+  min-height: 478px;
+  padding: 1rem 2rem;
 }
 .form-title {
   text-align: center;
   font-size: 2rem;
-  margin-bottom: 0.5rem;
 }
 form .form-row {
   position: relative;
-  width: 18rem;
+  width: 19rem;
   margin-bottom: 1rem;
+}
+.row-inline {
+  width: 19rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
 }
 form .form-input {
   font-family: "Work Sans", sans-serif;
@@ -99,6 +105,12 @@ form .form-input {
   border: 2px rgb(125, 91, 160) solid;
   border-radius: 0.25rem;
 }
+form .form-input:invalid {
+  color: #df0c0c;
+}
+form .form-input:invalid + .icon {
+  color: #df0c0c;
+}
 form button {
   cursor: pointer;
   width: 15rem;
@@ -108,16 +120,29 @@ form button {
   border-radius: 0.5rem;
   background-color: rebeccapurple;
   box-shadow: 0px 0px 10px 2px #00000071;
+  margin-bottom: 2rem;
 }
 form button:hover {
   background-color: rgb(137, 82, 192);
   transition: all 200ms linear;
 }
+svg {
+  width: 16px !important;
+  user-select: none;
+  transition: all 200ms linear;
+}
+.input-icon {
+  position: absolute;
+  right: 2%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: rebeccapurple;
+}
 .div-refresh-icon {
   text-align: right;
   width: 18rem;
   margin: 0;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
   padding: 0 0.25rem;
 }
 .refresh-icon {
@@ -132,6 +157,10 @@ form button:hover {
 .refresh-icon:active {
   color: #bdbdbd;
 }
+.class-inpt-error {
+  border-color: rgb(238, 9, 9) !important;
+}
+
 .spin-class {
   animation: spin 0.45s;
   animation-delay: 100ms;
@@ -145,7 +174,23 @@ form button:hover {
     transform: scale(0.9) rotate(360deg);
   }
 }
+/* overwrite checkbox default color */
 form .form-row .pretty input:checked ~ .state label::after {
   background-color: rebeccapurple !important;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+.slide-fade-leave-to {
+  transform: translateX(50px);
+  opacity: 0;
 }
 </style>

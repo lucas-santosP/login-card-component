@@ -1,6 +1,5 @@
 <template>
   <form action="#" class="sign-in">
-    <h2 class="form-title">Sign Out</h2>
     <div class="div-refresh-icon">
       <font-awesome-icon
         icon="sync"
@@ -18,27 +17,28 @@
         name="username"
         class="form-input"
       />
-      <font-awesome-icon icon="user" class="icon" />
+      <font-awesome-icon icon="user" class="input-icon" />
     </div>
-    <label>Date of birth *</label>
+    <label>Date of birth</label>
     <div class="form-row row-inline">
       <input
         v-model="formValue.date.month"
-        placeholder="Month"
+        placeholder="Month *"
         type="text"
         name="month"
         class="form-input input-month"
       />
       <input
         v-model="formValue.date.day"
-        placeholder="Day"
+        placeholder="Day *"
         type="text"
         name="dat"
         class="form-input input-day"
       />
+
       <input
         v-model="formValue.date.year"
-        placeholder="Year"
+        placeholder="Year *"
         type="text"
         name="year"
         class="form-input input-year"
@@ -53,7 +53,7 @@
         name="email"
         class="form-input"
       />
-      <font-awesome-icon icon="envelope" class="icon" />
+      <font-awesome-icon icon="envelope" class="input-icon" />
     </div>
     <div class="form-row">
       <input
@@ -62,19 +62,29 @@
         type="password"
         name="password"
         class="form-input"
+        ref="passwordInput"
       />
-      <font-awesome-icon icon="key" class="icon" />
+      <font-awesome-icon
+        :icon="eyeIcon"
+        @click="changePasswordVisibility('')"
+        class="input-icon"
+        style="cursor:pointer"
+      />
     </div>
     <div class="form-row row-inline">
       <p-check name="check" v-model="formValue.keepEmail"
         >Keep my email</p-check
       >
     </div>
-    <button type="submit" @click.prevent="checkForm()">Sign Out</button>
+    <button type="submit" @click.prevent="checkForm()">
+      Sign Out
+    </button>
   </form>
 </template>
 
 <script>
+import eventBus from "@/eventBus.js";
+
 export default {
   name: "SignOut",
   data() {
@@ -87,10 +97,19 @@ export default {
         keepEmail: false,
       },
       spin: false,
+      eyeIcon: "eye-slash",
     };
   },
 
   methods: {
+    changePasswordVisibility() {
+      let input = this.$refs.passwordInput;
+      input.type = input.type === "password" ? "text" : "password";
+
+      this.eyeIcon === "eye"
+        ? (this.eyeIcon = "eye-slash")
+        : (this.eyeIcon = "eye");
+    },
     setAnimationSpin() {
       this.spin = true;
       setTimeout(() => {
@@ -98,8 +117,7 @@ export default {
       }, 555);
     },
     checkForm() {
-      let values = { ...this.formValue };
-      this.$emit("receive-user", values);
+      eventBus.sendUser(this.formValue);
       this.clearInputs();
     },
     clearInputs() {
@@ -116,28 +134,17 @@ export default {
 </script>
 
 <style scoped>
-.row-inline {
-  width: 18rem;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.5rem;
-}
 .row-inline .form-input {
   margin: 0;
 }
-.row-inline .input-day,
+.row-inline .input-day {
+  width: 25% !important;
+}
 .row-inline .input-month {
-  width: 80px !important;
+  width: 28% !important;
 }
 .row-inline .input-year {
-  width: 100px;
-}
-.icon {
-  position: absolute;
-  right: 2%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: rebeccapurple;
+  width: 40%;
 }
 button {
   margin-top: 0.5rem;
