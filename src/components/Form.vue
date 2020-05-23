@@ -3,11 +3,11 @@
     <nav class="nav-tab">
       <ul>
         <li
-          @click="navTab = 'signUp'"
-          :class="{ active: navTab === 'signUp' }"
+          @click="navTab = 'signOut'"
+          :class="{ active: navTab === 'signOut' }"
           class="form-title"
         >
-          Sign Up
+          Sign Out
         </li>
         <li
           @click="navTab = 'signIn'"
@@ -21,7 +21,7 @@
     <div class="form-main">
       <transition name="slide-fade" mode="out-in">
         <SignIn v-if="navTab === 'signIn'"></SignIn>
-        <SignUp v-else></SignUp>
+        <SignOut v-else></SignOut>
       </transition>
     </div>
   </div>
@@ -29,17 +29,17 @@
 
 <script>
 import SignIn from "@/components/SignIn";
-import SignUp from "@/components/SignUp";
+import SignOut from "@/components/SignOut";
 
 export default {
-  name: "Forms",
+  name: "Form",
   components: {
     SignIn,
-    SignUp,
+    SignOut,
   },
   data() {
     return {
-      navTab: "signUp",
+      navTab: "signOut",
     };
   },
 };
@@ -85,6 +85,9 @@ export default {
 
 .slide-fade-enter-active {
   transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter {
   transform: translateY(-50px);

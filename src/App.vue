@@ -1,32 +1,45 @@
 <template>
   <div id="app">
     <section>
-      <Forms />
+      <Form></Form>
+      <transition name="slide-fade" mode="out-in">
+        <div
+          v-if="user"
+          style="flex-direction: column;color:#fff; font-size: 20px; margin:0 5rem"
+        >
+          <p>Name: {{ user.name }}</p>
+
+          <p>month:{{ user.date.month }}</p>
+          <p>day:{{ user.date.day }}</p>
+          <p>year:{{ user.date.year }}</p>
+
+          <p>Email:{{ user.email }}</p>
+          <p>Password{{ user.password }}</p>
+          <p>Keep email:{{ user.keepEmail }}</p>
+        </div>
+      </transition>
     </section>
   </div>
 </template>
 
 <script>
-import Forms from "./components/Forms.vue";
+import Form from "./components/Form.vue";
+import eventBus from "@/eventBus.js";
 
 export default {
   name: "App",
   components: {
-    Forms,
+    Form,
   },
   data() {
     return {
-      currentUser: undefined,
+      user: undefined,
     };
   },
-  mounted() {
-    this.$bus.receiveNewUser((user) => {
-      console.log("on: ", user);
-    });
-
-    this.$bus.receiveCurrentUser((user) => {
-      this.currentUser = user;
-      console.log(this.currentUser);
+  created() {
+    eventBus.receiveUser((user) => {
+      this.user = user;
+      console.log(this.user);
     });
   },
 };
@@ -34,7 +47,6 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap");
-
 body {
   width: 100%;
   height: 100vh;
