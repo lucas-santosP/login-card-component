@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  name: "SignOut",
+  name: "SignIn",
   data() {
     return {
       formValue: {
