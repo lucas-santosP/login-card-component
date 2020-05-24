@@ -42,6 +42,7 @@
         v-model="formValues.birthDay"
         type="text"
         name="dat"
+        :class="{ 'invalid-input': dateIsInvalid() }"
         class="form-input input-day"
       >
         <option value="" disabled>Day</option>
@@ -92,6 +93,18 @@
       />
     </div>
 
+    <div class="form-row">
+      <input
+        type="password"
+        name="passwordRepeat"
+        ref="passwordRepeatInput"
+        placeholder="Repeat Password *"
+        :class="['form-input', { 'invalid-input': passwordRepeatIsInvalid }]"
+        @input="$v.passwordRepeat.$touch()"
+        v-model="passwordRepeat"
+      />
+    </div>
+
     <div class="form-row row-inline">
       <p-check name="check" v-model="formValues.keepEmail"
         >Keep my email</p-check
@@ -105,7 +118,7 @@
 </template>
 
 <script>
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 
 export default {
   name: "SignUp",
@@ -121,6 +134,7 @@ export default {
         birthMonth: 0,
         birthYear: 2000,
       },
+      passwordRepeat: "",
       spin: false,
       currentPasswordIcon: "eye-slash",
     };
@@ -141,13 +155,19 @@ export default {
         minLength: minLength(4),
       },
     },
+    passwordRepeat: {
+      required,
+      sameAsPassword: sameAs(function() {
+        return this.formValues.password;
+      }),
+    },
   },
   deactivated() {
     this.clearForm();
   },
   methods: {
     submitForm() {
-      if (!this.$v.$invalid) {
+      if (!this.$v.$invalid && !this.dateIsInvalid()) {
         let newUser = { ...this.formValues };
         this.$bus.sendNewUser(newUser);
         this.clearForm();
@@ -167,7 +187,9 @@ export default {
     },
     changePasswordVisibility() {
       let input = this.$refs.passwordInput;
+      let inputRepeat = this.$refs.passwordRepeatInput;
       input.type = input.type === "password" ? "text" : "password";
+      inputRepeat.type = inputRepeat.type === "password" ? "text" : "password";
 
       this.currentPasswordIcon === "eye"
         ? (this.currentPasswordIcon = "eye-slash")
@@ -180,6 +202,15 @@ export default {
         this.clearForm();
         this.spin = false;
       }, 555);
+    },
+    dateIsInvalid() {
+      for (let i = 0; i < this.days.length; i++) {
+        if (this.days[i] === this.formValues.birthDay) {
+          return false;
+        }
+      }
+      this.formValues.birthDay = null;
+      return true;
     },
   },
   computed: {
@@ -199,6 +230,9 @@ export default {
         this.$v.formValues.password.$invalid &&
         this.$v.formValues.password.$dirty
       );
+    },
+    passwordRepeatIsInvalid() {
+      return this.$v.passwordRepeat.$invalid && this.$v.passwordRepeat.$dirty;
     },
     months() {
       return [
