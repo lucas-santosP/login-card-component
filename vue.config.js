@@ -1,3 +1,3 @@
-module.export = {
-  baseUrl: "/login-page-vue",
+module.exports = {
+  publicPath: "/login-page-vue/",
 };
