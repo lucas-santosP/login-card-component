@@ -5,20 +5,22 @@
         icon="sync"
         class="refresh-icon"
         :class="spin ? 'spin-class' : ''"
-        @click="clearInputs(), setAnimationSpin()"
+        @click="runClearAnimation()"
       />
     </div>
 
     <div class="form-row">
       <input
-        v-model="formValues.name"
         placeholder="Username *"
         type="text"
         name="username"
-        class="form-input"
+        :class="['form-input', { 'invalid-input': usernameIsInvalid }]"
+        @input="$v.formValues.username.$touch()"
+        v-model="formValues.username"
       />
       <font-awesome-icon icon="user" class="input-icon" />
     </div>
+
     <label>Date of birth*</label>
     <div class="form-row row-inline">
       <select
@@ -62,118 +64,103 @@
 
     <div class="form-row">
       <input
-        v-model="formValues.email"
         placeholder="Email *"
         type="email"
         name="email"
-        class="form-input"
+        :class="['form-input', { 'invalid-input': emailIsInvalid }]"
+        @input="$v.formValues.email.$touch()"
+        v-model="formValues.email"
       />
       <font-awesome-icon icon="envelope" class="input-icon" />
     </div>
+
     <div class="form-row">
       <input
-        v-model="formValues.password"
-        placeholder="Password *"
         type="password"
         name="password"
-        class="form-input"
         ref="passwordInput"
+        placeholder="Password *"
+        :class="['form-input', { 'invalid-input': passwordIsInvalid }]"
+        @input="$v.formValues.password.$touch()"
+        v-model="formValues.password"
       />
       <font-awesome-icon
-        :icon="eyeIcon"
-        @click="changePasswordVisibility('')"
+        :icon="currentPasswordIcon"
+        @click="changePasswordVisibility()"
         class="input-icon"
         style="cursor:pointer"
       />
     </div>
+
     <div class="form-row row-inline">
       <p-check name="check" v-model="formValues.keepEmail"
         >Keep my email</p-check
       >
     </div>
-    <button type="submit" @click.prevent="checkForm()">
+
+    <button type="submit" @click.prevent="submitForm()">
       Sign Up
     </button>
   </form>
 </template>
 
 <script>
-import {
-  required,
-  minLength,
-  alpha,
-  email,
-  between,
-} from "vuelidate/lib/validators";
+import { required, minLength, email } from "vuelidate/lib/validators";
 
 export default {
   name: "SignUp",
-  validations: {
-    formValues: {
-      name: {
-        alpha,
-        required,
-        minLength: minLength(4),
-      },
-      email: {
-        email,
-        required,
-        minLength: minLength(4),
-      },
-      birthDay: {
-        between: between(1, 31),
-      },
-    },
-  },
+
   data() {
     return {
       formValues: {
-        name: "",
+        username: "",
         email: "",
         password: "",
-        keepEmail: false,
+        keepEmail: true,
         birthDay: 1,
         birthMonth: 0,
         birthYear: 2000,
       },
       spin: false,
-      eyeIcon: "eye-slash",
+      currentPasswordIcon: "eye-slash",
     };
   },
+  validations: {
+    formValues: {
+      username: {
+        required,
+        minLength: minLength(4),
+      },
+      email: {
+        required,
+        email,
+        minLength: minLength(4),
+      },
+      password: {
+        required,
+        minLength: minLength(4),
+      },
+    },
+  },
+  deactivated() {
+    this.clearForm();
+  },
   methods: {
-    onlyNumber($event) {
-      let keyCode = $event.keyCode ? $event.keyCode : $event.which;
-      if (keyCode < 48 || keyCode > 57) {
-        $event.preventDefault();
+    submitForm() {
+      if (!this.$v.$invalid) {
+        let newUser = { ...this.formValues };
+        this.$bus.sendNewUser(newUser);
+        this.clearForm();
+      } else {
+        this.$v.$touch();
       }
     },
-    lengthLimit($event, inputName, maxLength) {
-      let currentLength = 0;
-      switch (inputName) {
-        case "month":
-          currentLength = this.formValues.birthMonth.length;
-          break;
-        case "day":
-          currentLength = this.formValues.birthDay.length;
-          break;
-        default:
-          currentLength = this.formValues.birthYear.length;
-          break;
-      }
-
-      if (currentLength === maxLength) $event.preventDefault();
-    },
-    checkForm() {
-      let user = { ...this.formValues };
-      user.date = { ...this.formValues.date };
-
-      this.$bus.sendNewUser(user);
-      this.clearInputs();
-    },
-    clearInputs() {
-      this.formValues.name = "";
+    clearForm() {
+      this.$v.$reset();
+      this.formValues.username = "";
       this.formValues.email = "";
       this.formValues.password = "";
+      this.formValues.keepEmail = true;
       this.formValues.birthDay = 1;
       this.formValues.birthMonth = 0;
       this.formValues.birthYear = 2000;
@@ -182,18 +169,37 @@ export default {
       let input = this.$refs.passwordInput;
       input.type = input.type === "password" ? "text" : "password";
 
-      this.eyeIcon === "eye"
-        ? (this.eyeIcon = "eye-slash")
-        : (this.eyeIcon = "eye");
+      this.currentPasswordIcon === "eye"
+        ? (this.currentPasswordIcon = "eye-slash")
+        : (this.currentPasswordIcon = "eye");
     },
-    setAnimationSpin() {
+    runClearAnimation() {
       this.spin = true;
+
       setTimeout(() => {
+        this.clearForm();
         this.spin = false;
       }, 555);
     },
   },
   computed: {
+    usernameIsInvalid() {
+      return (
+        this.$v.formValues.username.$invalid &&
+        this.$v.formValues.username.$dirty
+      );
+    },
+    emailIsInvalid() {
+      return (
+        this.$v.formValues.email.$invalid && this.$v.formValues.email.$dirty
+      );
+    },
+    passwordIsInvalid() {
+      return (
+        this.$v.formValues.password.$invalid &&
+        this.$v.formValues.password.$dirty
+      );
+    },
     months() {
       return [
         "January",
@@ -253,8 +259,5 @@ export default {
 }
 select {
   font-size: 15px !important;
-}
-button {
-  margin-top: 0.5rem;
 }
 </style>

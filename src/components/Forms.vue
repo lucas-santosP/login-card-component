@@ -3,25 +3,25 @@
     <nav class="nav-tab">
       <ul>
         <li
-          @click="navTab = 'signUp'"
-          :class="{ active: navTab === 'signUp' }"
-          class="form-title"
+          @click="navTab = 'SignUp'"
+          :class="['form-title', { 'active-tab': navTab === 'SignUp' }]"
         >
           Sign Up
         </li>
         <li
-          @click="navTab = 'signIn'"
-          :class="{ active: navTab === 'signIn' }"
-          class="form-title"
+          @click="navTab = 'SignIn'"
+          :class="['form-title', { 'active-tab': navTab === 'SignIn' }]"
         >
           Sign In
         </li>
       </ul>
     </nav>
+
     <div class="form-main">
       <transition name="slide-fade" mode="out-in">
-        <SignIn v-if="navTab === 'signIn'"></SignIn>
-        <SignUp v-else></SignUp>
+        <keep-alive>
+          <component :is="navTab" />
+        </keep-alive>
       </transition>
     </div>
   </div>
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      navTab: "signUp",
+      navTab: "SignUp",
     };
   },
 };
@@ -49,7 +49,10 @@ export default {
 .container {
   background: none;
 }
-
+.form-title {
+  text-align: center;
+  font-size: 2rem;
+}
 .form-main {
   background-color: #fff;
   border-bottom-left-radius: 1rem;
@@ -68,24 +71,28 @@ export default {
   width: 100%;
 }
 .nav-tab ul li {
-  transition: all 500ms ease;
+  transition: all 400ms ease;
   flex: 1;
   height: 100%;
   color: rgba(255, 255, 255, 0.575);
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.14);
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
   cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
-.nav-tab ul li.active {
+.nav-tab ul li:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.301);
+}
+.nav-tab ul li.active-tab {
+  cursor: default;
   border-bottom: none;
-  color: black;
+  color: #2c3e50;
   background-color: white;
 }
 
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
 .slide-fade-enter {
   transform: translateY(-50px);
   opacity: 0;

@@ -57,7 +57,6 @@ section {
   align-items: center;
   height: 100vh;
   min-height: 600px;
-  border-bottom: 2px solid black;
 }
 form {
   display: flex;
@@ -67,10 +66,7 @@ form {
   align-items: center;
   min-height: 478px;
   padding: 1rem 2rem;
-}
-.form-title {
-  text-align: center;
-  font-size: 2rem;
+  padding-bottom: 2rem;
 }
 form .form-row {
   position: relative;
@@ -92,12 +88,7 @@ form .form-input {
   color: #2c3e50;
   border: 2px rgb(125, 91, 160) solid;
   border-radius: 0.25rem;
-}
-form .form-input:invalid {
-  color: #df0c0c;
-}
-form .form-input:invalid + .icon {
-  color: #df0c0c;
+  transition: all 400ms ease;
 }
 form button {
   cursor: pointer;
@@ -108,7 +99,7 @@ form button {
   border-radius: 0.5rem;
   background-color: rebeccapurple;
   box-shadow: 0px 0px 10px 2px #00000071;
-  margin-bottom: 2rem;
+  margin-top: auto;
 }
 form button:hover {
   background-color: rgb(137, 82, 192);
@@ -129,8 +120,8 @@ svg {
 .div-refresh-icon {
   text-align: right;
   width: 18rem;
-  margin: 0;
-  margin: 0.5rem 0;
+  margin-top: 0.25rem;
+  margin-bottom: 0.6rem;
   padding: 0 0.25rem;
 }
 .refresh-icon {
@@ -148,6 +139,13 @@ svg {
 .class-inpt-error {
   border-color: rgb(238, 9, 9) !important;
 }
+form .form-input.invalid-input {
+  border-color: red;
+}
+/* overwrite checkbox default color */
+form .form-row .pretty input:checked ~ .state label::after {
+  background-color: rebeccapurple !important;
+}
 
 .spin-class {
   animation: spin 0.45s;
@@ -162,11 +160,6 @@ svg {
     transform: scale(0.9) rotate(360deg);
   }
 }
-/* overwrite checkbox default color */
-form .form-row .pretty input:checked ~ .state label::after {
-  background-color: rebeccapurple !important;
-}
-
 .slide-fade-enter-active {
   transition: all 0.3s ease;
 }
