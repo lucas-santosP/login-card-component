@@ -2,17 +2,17 @@ import Vue from "vue";
 
 const eventBus = new Vue({
   methods: {
-    sendNewUser(user) {
+    sendUserSignUp(user) {
       this.$emit("send-new-user", user);
     },
-    receiveNewUser(callback) {
+    receiveUserSignUp(callback) {
       this.$on("send-new-user", callback);
     },
 
-    sendCurrentUser(user) {
+    sendUserSignIn(user) {
       this.$emit("send-current-user", user);
     },
-    receiveCurrentUser(callback) {
+    receiveUserSignIn(callback) {
       this.$on("send-current-user", callback);
     },
   },

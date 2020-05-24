@@ -1,5 +1,5 @@
 <template>
-  <form action="#" class="sign-in">
+  <form action="#">
     <div class="div-refresh-icon">
       <font-awesome-icon
         icon="sync"
@@ -21,7 +21,7 @@
       <font-awesome-icon icon="user" class="input-icon" />
     </div>
 
-    <label>Date of birth*</label>
+    <label>Date of birth *</label>
     <div class="form-row row-inline">
       <select
         v-model="formValues.birthMonth"
@@ -106,13 +106,17 @@
     </div>
 
     <div class="form-row row-inline">
-      <p-check name="check" v-model="formValues.keepEmail"
-        >Keep my email</p-check
+      <p-check name="check" v-model="formValues.subscribeEmail"
+        >Subscribe to our Newsletter</p-check
       >
     </div>
 
-    <button type="submit" @click.prevent="submitForm()">
-      Sign Up
+    <button
+      type="button"
+      @click.prevent="submitForm()"
+      :class="{ 'sucess-input': buttonText === 'Sended' }"
+    >
+      {{ buttonText }}
     </button>
   </form>
 </template>
@@ -122,14 +126,13 @@ import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
 
 export default {
   name: "SignUp",
-
   data() {
     return {
       formValues: {
         username: "",
         email: "",
         password: "",
-        keepEmail: true,
+        subscribeEmail: true,
         birthDay: 1,
         birthMonth: 0,
         birthYear: 2000,
@@ -137,6 +140,7 @@ export default {
       passwordRepeat: "",
       spin: false,
       currentPasswordIcon: "eye-slash",
+      buttonText: "Sign Up",
     };
   },
   validations: {
@@ -148,11 +152,10 @@ export default {
       email: {
         required,
         email,
-        minLength: minLength(4),
       },
       password: {
         required,
-        minLength: minLength(4),
+        minLength: minLength(6),
       },
     },
     passwordRepeat: {
@@ -169,8 +172,9 @@ export default {
     submitForm() {
       if (!this.$v.$invalid && !this.dateIsInvalid()) {
         let newUser = { ...this.formValues };
-        this.$bus.sendNewUser(newUser);
+        this.$bus.sendUserSignUp(newUser);
         this.clearForm();
+        this.showSucess();
       } else {
         this.$v.$touch();
       }
@@ -180,10 +184,16 @@ export default {
       this.formValues.username = "";
       this.formValues.email = "";
       this.formValues.password = "";
-      this.formValues.keepEmail = true;
+      this.formValues.subscribeEmail = true;
       this.formValues.birthDay = 1;
       this.formValues.birthMonth = 0;
       this.formValues.birthYear = 2000;
+    },
+    showSucess() {
+      this.buttonText = "Sended";
+      setTimeout(() => {
+        this.buttonText = "Sign Up";
+      }, 1400);
     },
     changePasswordVisibility() {
       let input = this.$refs.passwordInput;
@@ -291,7 +301,7 @@ export default {
 .row-inline .input-year {
   width: 28%;
 }
-select {
+select.form-input {
   font-size: 15px !important;
 }
 </style>
