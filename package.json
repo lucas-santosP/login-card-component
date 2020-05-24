@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -17,6 +17,8 @@
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.1.0",
+    "@fullhuman/vue-cli-plugin-purgecss": "~2.2.0",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-plugin-unit-jest": "^4.3.1",
@@ -26,6 +28,7 @@
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "pretty-checkbox-vue": "^1.1.9",
+    "push-dir": "^0.4.1",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
