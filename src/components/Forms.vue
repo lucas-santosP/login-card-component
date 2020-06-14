@@ -95,7 +95,6 @@ form {
   justify-content: flex-start;
   align-items: flex-start;
   align-items: center;
-  min-height: 520px;
   padding: 1rem 2rem;
   padding-bottom: 2rem;
 }
@@ -103,12 +102,17 @@ form .form-row {
   position: relative;
   width: 19rem;
   margin-bottom: 1rem;
+  /* margin-top: 0.2rem; */
 }
 .row-inline {
   width: 19rem;
   display: flex;
   justify-content: space-between;
-  margin-top: 0.5rem;
+}
+form .form-label {
+  text-align: start;
+  width: 100%;
+  padding: 0.3rem 0;
 }
 form .form-input {
   font-family: "Work Sans", sans-serif;
@@ -123,7 +127,7 @@ form .form-input {
 }
 form button {
   cursor: pointer;
-  width: 15rem;
+  width: 100%;
   height: 3rem;
   font-size: 1rem;
   color: #fff;
@@ -155,9 +159,7 @@ svg {
 .div-refresh-icon {
   text-align: right;
   width: 18rem;
-  margin-top: 0.25rem;
-  margin-bottom: 0.6rem;
-  padding: 0 0.25rem;
+  margin: 0.2rem 0;
 }
 .refresh-icon {
   color: #9d9d9e;

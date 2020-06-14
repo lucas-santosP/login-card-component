@@ -9,11 +9,11 @@
       />
     </div>
 
+    <label class="form-label" for="signInEmail">Email:</label>
     <div class="form-row">
       <input
-        placeholder="Email *"
+        id="signInEmail"
         type="email"
-        name="email"
         @input="$v.formValues.email.$touch()"
         :class="['form-input', { 'invalid-input': emailIsInvalid }]"
         v-model="formValues.email"
@@ -21,11 +21,11 @@
       <font-awesome-icon icon="envelope" class="input-icon" />
     </div>
 
+    <label class="form-label" for="signInPassword">Password:</label>
     <div class="form-row">
       <input
+        id="signInPassword"
         type="password"
-        name="password"
-        placeholder="Password *"
         ref="passwordInput"
         :class="['form-input', { 'invalid-input': passwordIsInvalid }]"
         @input="$v.formValues.password.$touch()"
@@ -38,6 +38,7 @@
         style="cursor:pointer"
       />
     </div>
+
     <button
       type="button"
       @click.prevent="submitForm()"

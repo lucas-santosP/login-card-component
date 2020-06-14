@@ -9,11 +9,11 @@
       />
     </div>
 
+    <label class="form-label" for="signUpUsername">Username:</label>
     <div class="form-row">
       <input
-        placeholder="Username *"
+        id="signUpUsername"
         type="text"
-        name="username"
         :class="['form-input', { 'invalid-input': usernameIsInvalid }]"
         @input="$v.formValues.username.$touch()"
         v-model="formValues.username"
@@ -21,12 +21,11 @@
       <font-awesome-icon icon="user" class="input-icon" />
     </div>
 
-    <label>Date of birth *</label>
+    <label class="form-label">Date of birth:</label>
     <div class="form-row row-inline">
       <select
         v-model="formValues.birthMonth"
         type="text"
-        name="month"
         class="form-input input-month"
       >
         <option value="" disabled>Month</option>
@@ -63,11 +62,11 @@
       </select>
     </div>
 
+    <label class="form-label" for="signUpEmail">Email:</label>
     <div class="form-row">
       <input
-        placeholder="Email *"
+        id="signUpEmail"
         type="email"
-        name="email"
         :class="['form-input', { 'invalid-input': emailIsInvalid }]"
         @input="$v.formValues.email.$touch()"
         v-model="formValues.email"
@@ -75,12 +74,12 @@
       <font-awesome-icon icon="envelope" class="input-icon" />
     </div>
 
+    <label class="form-label" for="signUpPassword">Password:</label>
     <div class="form-row">
       <input
+        id="signUpPassword"
         type="password"
-        name="password"
         ref="passwordInput"
-        placeholder="Password *"
         :class="['form-input', { 'invalid-input': passwordIsInvalid }]"
         @input="$v.formValues.password.$touch()"
         v-model="formValues.password"
@@ -92,13 +91,14 @@
         style="cursor:pointer"
       />
     </div>
-
+    <label class="form-label" for="signUpRepeatPassword"
+      >Repeat Password:</label
+    >
     <div class="form-row">
       <input
+        id="signUpRepeatPassword"
         type="password"
-        name="passwordRepeat"
         ref="passwordRepeatInput"
-        placeholder="Repeat Password *"
         :class="['form-input', { 'invalid-input': passwordRepeatIsInvalid }]"
         @input="$v.passwordRepeat.$touch()"
         v-model="passwordRepeat"
