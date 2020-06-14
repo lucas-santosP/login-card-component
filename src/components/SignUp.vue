@@ -184,6 +184,7 @@ export default {
       this.formValues.username = "";
       this.formValues.email = "";
       this.formValues.password = "";
+      this.passwordRepeat = "";
       this.formValues.subscribeEmail = true;
       this.formValues.birthDay = 1;
       this.formValues.birthMonth = 0;
