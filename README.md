@@ -10,7 +10,7 @@ A simple sign in/sign up card component with input validation.
 
 ## Demo
 
-Demonstration online by [GitHub Pages](https://pages.github.com) on this [link](https://lucas-santosp.github.io/login-page-vue/).
+Demonstration online by [GitHub Pages](https://pages.github.com) on this [link](https://lucas-santosp.github.io/login-card-component).
 
 ## Installation
 
