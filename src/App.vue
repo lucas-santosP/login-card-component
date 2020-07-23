@@ -1,18 +1,16 @@
 <template>
   <div id="app">
-    <section>
-      <Forms />
-    </section>
+    <Form />
   </div>
 </template>
 
 <script>
-import Forms from "./components/Forms.vue";
+import Form from "./components/Form";
 
 export default {
   name: "App",
   components: {
-    Forms,
+    Form,
   },
   data() {
     return {};
@@ -49,12 +47,5 @@ body {
 #app {
   width: 100%;
   height: 100%;
-}
-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  min-height: 600px;
 }
 </style>

@@ -1,24 +1,32 @@
-# login-page
+# Login card component
 
-## Project setup
+A simple sign in/sign up card component with input validation.
+
+## Build With
+
+- [Vue](https://vuejs.org)
+- [Vuelidate](https://vuelidate.js.org)
+
+## Demo
+
+Demonstration online by [GitHub Pages](https://pages.github.com) on this [link](https://lucas-santosp.github.io/login-page-vue/).
+
+## Installation
+
+With NPM:
+
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
+Or with Yarn:
+
 ```
-npm run build
+yarn
+yarn serve
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## License
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This project is licensed under the MIT License - see the LICENSE.md file for details

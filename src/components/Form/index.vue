@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import SignIn from "@/components/SignIn";
-import SignUp from "@/components/SignUp";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 export default {
   name: "Forms",
@@ -46,6 +46,12 @@ export default {
 </script>
 
 <style>
+.forms-container {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .forms-container .form-title {
   text-align: center;
   font-size: 2rem;
