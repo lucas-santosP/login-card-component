@@ -1,5 +1,6 @@
 # Login card component
 
+![Design preview](./demo-img.PNG)
 A simple sign in/sign up card component with input validation.
 
 ## Build With
